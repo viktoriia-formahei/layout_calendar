@@ -2,36 +2,52 @@ $item-width: 100px;
 $item-height: 100px;
 $gap-size: 10px;
 $columns: 7;
-
 $days: (
-  mon: 0,
-  tue: 1,
-  wed: 2,
-  thu: 3,
-  fri: 4,
-  sat: 5,
-  sun: 6
+  'sun': 0,
+  'mon': 1,
+  'tue': 2,
+  'wed': 3,
+  'thu': 4,
+  'fri': 5,
+  'sat': 6
 );
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .calendar {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-
-  gap: $gap-size;
+  justify-content: flex-start;
+  gap: 3px;
+  height: max-content;
 
   width: calc((100px * 7) + (10px * 6));
 
   &__day {
-    // Кожен день займає точно 1/7 ширини календаря
     width: calc(100% / 7);
     box-sizing: border-box;
+  }
 
+  @each $day, $index in $days {
+      &--start-day-#{$day} {
+        margin-left: calc(100% / 7 * #{$index});
+      }
+    }
+
+      @for $length from 28 through 31 {
+    &--month-length-#{$length} {
+      .calendar__day:nth-child(n + #{$length + 1}) {
+        display: none;
+      }
+    }
+  }
 }
 
 .calendar__item{
@@ -51,6 +67,11 @@ body {
         content: "#{$i}";
       }
     }
+  }
 
+.calendar__item:hover{
+  cursor: pointer;
+  background-color: #FFBFCB;
+  transform: translateY(-20px);
+  transition-duration: 500ms;
 }
-
